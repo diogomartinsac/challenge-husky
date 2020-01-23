@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/diogo/Documents/ROS_workspaces/desafio1_ws/devel/include/**",
+                "/home/diogo/Documents/ROS_workspaces/LeGo_ws/devel/include/**",
+                "/opt/ros/melodic/include/**",
+                "/home/diogo/Documents/ROS_workspaces/catkin_ws/src/A-LOAM/include/**",
+                "/home/diogo/Documents/ROS_workspaces/desafio1_ws/src/husky_base/include/**",
+                "/home/diogo/Documents/ROS_workspaces/LeGo_ws/src/LeGO-LOAM/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

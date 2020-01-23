@@ -1,0 +1,7 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/diogo/Documents/ROS_workspaces/desafio1_ws/devel/lib/python2.7/dist-packages",
+        "/home/diogo/Documents/ROS_workspaces/LeGo_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ]
+}
