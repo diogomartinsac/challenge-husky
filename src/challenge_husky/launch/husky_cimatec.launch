@@ -25,14 +25,17 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 -->
 <launch>
 
-  <arg name="world_name" default="worlds/empty.world"/>
-
+  <!-- <arg name="world_name" default="$(find cimatec_map)/world/cimatec.world"/>"/>
+  
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find cimatec_map)/model"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find cimatec_map)/model"/> -->
+  
   <arg name="laser_enabled" default="false"/>
   <arg name="kinect_enabled" default="false"/>
-  <arg name="urdf_extras" default="$(find challenge_husky)/urdf/vlp16.urdf.xacro"/>
+  <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
 
   <include file="$(find cimatec_map)/launch/gazebo.launch">
-    <!-- <arg name="world_name" value="$(arg world_name)"/> world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
+    <!-- <arg name="world_name" value="$(arg world_name)"/>  -->
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
