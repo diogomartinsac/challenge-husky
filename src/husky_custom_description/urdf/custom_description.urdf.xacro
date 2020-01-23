@@ -2,8 +2,8 @@
 <!--
 Software License Agreement (BSD)
 
-\file      husky_empty_world.launch
-\authors   Paul Bovbel <pbovbel@clearpathrobotics.com, Devon Ash <dash@clearpathrobotics.com>
+\file      description.urdf.xacro
+\authors   Paul Bovbel <pbovbel@clearpathrobotics.com>, Devon Ash <dash@clearpathrobotics.com>
 \copyright Copyright (c) 2015, Clearpath Robotics, Inc., All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -23,28 +23,35 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<launch>
+<robot name="husky" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <arg name="world_name" default="worlds/empty.world"/>
+  <xacro:arg name="laser_enabled" default="$(optenv HUSKY_LMS1XX_ENABLED false)" />
+  <xacro:arg name="ur5_enabled" default="$(optenv HUSKY_UR5_ENABLED false)" />
+  <xacro:arg name="kinect_enabled" default="false" />
 
-  <arg name="laser_enabled" default="false"/>
-  <arg name="kinect_enabled" default="false"/>
-  <arg name="urdf_extras" default="$(find challenge_husky)/urdf/vlp16.urdf.xacro"/>
+  <xacro:include filename="$(find husky_description)/urdf/husky.urdf.xacro" />
+  <xacro:husky_robot />
 
-  <include file="$(find cimatec_map)/launch/gazebo.launch">
-    <!-- <arg name="world_name" value="$(arg world_name)"/> world_name is wrt GAZEBO_RESOURCE_PATH environment variable -->
-    <arg name="paused" value="false"/>
-    <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-  </include>
+  <!-- Insert customization below, sample provided: -->
 
-  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
-    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
-    <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
-    <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+  <link name="bowler_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://husky_custom_description/meshes/red_bowler.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.07" rpy="0 0 0" />
+      <geometry>
+        <box size="0.32 0.25 0.14" rpy="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
 
-  </include>
+  <joint name="bowler_joint" type="fixed">
+    <parent link="top_plate_link" />
+    <child link="bowler_link" />
+    <origin xyz="0.1 -0.1 0" rpy="0 0 0.5" />
+  </joint>
 
-</launch>
+</robot>
