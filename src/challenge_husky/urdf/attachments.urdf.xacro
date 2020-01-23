@@ -7,7 +7,7 @@
   
   
   <VLP-16 parent="vlp_support_link" name="velodyne" topic="/velodyne_points" hz="10" samples="440" gpu="${gpu}">
-    <origin xyz="0 0 0.1" rpy="0 0 0" />
+    <origin xyz="0 0 0.13" rpy="0 0 0" />
   </VLP-16>
 
   <link name="vlp_support_link">
@@ -59,7 +59,7 @@
     <joint name="bowler_joint" type="fixed">
       <parent link="top_plate_link" />
       <child link="bowler_link" />
-      <origin xyz="0.2 0 0.01" rpy="0 0 0" />
+      <origin xyz="0 0 0.1" rpy="0 0 0" />
     </joint>
 
 
