@@ -71,7 +71,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     <node pkg="tf"
     type="static_transform_publisher"
     name="base_link_to_camera_init"
-    args="0 0 0 0 0 0 base_link camera_init 100" />
+    args="0 0 0 0 0 0 odom camera_init 100" />
 
     <arg name="rviz" default="true" />
     <group if="$(arg rviz)">
