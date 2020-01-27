@@ -79,10 +79,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     name="base_link_to_camera_init"
     args="0 0 0 0 0 0 odom camera_init 100" />
 
-    <!-- <node pkg="pointcloud_to_laserscan"
+    <node pkg="pointcloud_to_laserscan"
     type="pointcloud_to_laserscan_node"
     name="pointcloud_to_laserscan_node"
-    args="cloud_in:=/velodyne_points" /> -->
+    args="cloud_in:=/velodyne_points" />
 
     <arg name="rviz" default="true" />
     <group if="$(arg rviz)">
