@@ -5,10 +5,12 @@
   <xacro:property name="gpu" value="$(arg gpu)" />
   <xacro:property name="topic" value="$(arg topic)" />
   <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+  <xacro:include filename="$(find opencv)/urdf/camera.xacro"/>
+
   
   
   <VLP-16 parent="vlp_support_link" name="velodyne" topic="${topic}" hz="10" samples="440" gpu="${gpu}">
-    <origin xyz="0 0 0.08" rpy="0 0 0" />
+    <origin xyz="0 0 0.05" rpy="0 0 0" />
   </VLP-16>
 
   <link name="vlp_support_link">
@@ -44,7 +46,7 @@
     <axis xyz="0.0 0.0 0.0"/>
     <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
   </joint>
-
+<!-- 
     <link name="bowler_link">
       <visual>
         <geometry>
@@ -63,7 +65,22 @@
       <parent link="top_plate_link" />
       <child link="bowler_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint>
+    </joint> -->
+
+<joint name="base_camera_joint" type="fixed">
+  <origin xyz="0.0 0.0 0.11" rpy="0.0 0.0 0.0"/>
+  <parent link="top_plate_link"/>
+  <child link="base_camera"/>
+  <axis xyz="0.0 0.0 0.0"/>
+  <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
+</joint>
+  
+
+
+
+
+
+
 
 
   </robot>

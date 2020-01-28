@@ -13,10 +13,15 @@
 	</node>
 
 	<!-- Start Mapper to genreate map from laser scans -->
-	<node name="Mapper" pkg="nav2d_karto" type="mapper">
+	<!-- <node name="Mapper" pkg="nav2d_karto" type="mapper">
 		<remap from="scan" to="scan"/>
 		<rosparam file="$(find challenge_husky)/param/mapper.yaml"/>
-	</node>
+	</node> -->
+
+	     <!-- - Run gmapping -->
+  	<include file="$(find husky_navigation)/launch/gmapping.launch">
+    	<rosparam file="$(find challenge_husky)/param/mapper.yaml"/>
+	</include>
 
 	<!-- Start the Navigator to move the robot autonomously -->
 	<node name="Navigator" pkg="nav2d_navigator" type="navigator">

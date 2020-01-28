@@ -1,0 +1,69 @@
+<launch>
+
+	<!-- Some general parameters -->
+	<param name="use_sim_time" value="true" />
+	<rosparam file="$(find challenge_husky)/param/ros.yaml"/>
+
+	<!-- Start the Operator to control the simulated robot -->
+	<node name="Operator" pkg="nav2d_operator" type="operator" >
+		<remap from="scan" to="base_scan"/>
+		<rosparam file="$(find challenge_husky)/param/operator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/costmap.yaml" ns="local_map" />
+	</node>
+
+	<!-- Start Mapper to genreate map from laser scans
+	<node name="Mapper" pkg="nav2d_karto" type="mapper">
+		<rosparam file="$(find challenge_husky)/param/mapper.yaml"/>
+	</node> -->
+
+	<!-- Start the Navigator to move the robot autonomously -->
+	<node name="Navigator" pkg="nav2d_navigator" type="navigator">
+		<rosparam file="$(find challenge_husky)/param/navigator.yaml"/>
+	</node>
+
+	<node name="GetMap" pkg="nav2d_navigator" type="get_map_client" />
+	<node name="Explore" pkg="nav2d_navigator" type="explore_client" />
+	<node name="SetGoal" pkg="nav2d_navigator" type="set_goal_client" />
+
+    <arg name="laser_enabled" default="false"/>
+  <arg name="kinect_enabled" default="false"/>
+  <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
+  <!-- <arg name="config_extras" default="$(find challenge_husky)/config/custom_localization.yaml"/> -->
+
+  <include file="$(find cimatec_map)/launch/gazebo.launch">
+    <!-- <arg name="world_name" value="$(arg world_name)"/>  -->
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
+    <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+    <!-- <arg name="config_extras" default="$(arg config_extras)"/> -->
+  </include>
+
+
+
+    <node pkg="pointcloud_to_laserscan"
+    type="pointcloud_to_laserscan_node"
+    name="pointcloud_to_laserscan_node"
+    args="cloud_in:=/velodyne_points" />
+
+    <arg name="rviz" default="true" />
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find challenge_husky)/rviz/config.rviz" />
+    </group>
+    
+     <!-- - Run gmapping -->
+  <include file="$(find husky_navigation)/launch/gmapping.launch" />
+  <!-- - Run Move Base   -->
+  <include file="$(find husky_navigation)/launch/move_base.launch">
+    <arg name="no_static_map" value="true"/>
+  </include>
+
+
+</launch>

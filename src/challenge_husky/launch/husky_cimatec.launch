@@ -29,7 +29,9 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   
   <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find cimatec_map)/model"/>
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find cimatec_map)/model"/> -->
-  
+
+
+
   <arg name="laser_enabled" default="false"/>
   <arg name="kinect_enabled" default="false"/>
   <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
@@ -58,19 +60,19 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     name="pointcloud_to_laserscan_node"
     args="cloud_in:=/velodyne_points" />
 
+    <!-- <node pkg="opencv" name="opencv_camera" type="objectDetection.py" output="screen" /> -->
+
     <arg name="rviz" default="true" />
     <group if="$(arg rviz)">
         <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find challenge_husky)/rviz/config.rviz" />
     </group>
-
-
     
      <!-- - Run gmapping -->
   <!-- <include file="$(find husky_navigation)/launch/gmapping.launch" /> -->
   <!-- - Run Move Base   -->
-  <!-- <include file="$(find husky_navigation)/launch/move_base.launch">
+  <include file="$(find husky_navigation)/launch/move_base.launch">
     <arg name="no_static_map" value="true"/>
-  </include> -->
+  </include>
 
 
 
