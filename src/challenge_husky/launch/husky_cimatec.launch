@@ -37,8 +37,18 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
   <!-- <arg name="config_extras" default="$(find challenge_husky)/config/custom_localization.yaml"/> -->
 
-  <include file="$(find cimatec_map)/launch/gazebo.launch">
-    <!-- <arg name="world_name" value="$(arg world_name)"/>  -->
+  <!-- <include file="$(find cimatec_map)/launch/gazebo.launch">
+    <arg name="world_name" value="$(arg world_name)"/> 
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include> -->
+
+    <arg name="world_name" default="$(find sphere_follower)/worlds/cimatec_world.world"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/> 
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
@@ -60,8 +70,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
         <rosparam>
             target_frame: velodyne # Leave disabled to output scan in pointcloud frame
             transform_tolerance: 0.01
-            min_height: -0.4
-            max_height: 1.0
+            min_height: -0.45
+            max_height: 2.0
             angle_min: -M_PI
             angle_max: M_PI
             angle_increment: 0.0087 # M_PI/360.0
@@ -92,6 +102,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     <arg name="no_static_map" value="true"/>
   </include>
 
-
+  <node pkg="sphere_follower" name="opencv_camera" type="objectDetection.py" output="screen" />
+  <node pkg="sphere_follower" name="robot_vision" type="control_vision.py" output="screen" />
 
 </launch>

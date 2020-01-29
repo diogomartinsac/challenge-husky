@@ -14,7 +14,7 @@
            <far>100</far>
          </clip>
        </camera>
-        <plugin name="light_sensor_plugin" filename="/home/diogo/Documents/ROS_workspaces/challenge-husky/devel/lib/libgazebo_light_sensor_plugin.so">
+        <plugin name="light_sensor_plugin" filename="/home/bir/Documents/workspaces_ros/Projetos/challengeBomb_ws/devel/lib/libgazebo_light_sensor_plugin.so">
           <alwaysOn>true</alwaysOn>
           <updateRate>10</updateRate>
           <cameraName>diff/camera_top</cameraName>
@@ -38,13 +38,13 @@
       <visual>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://opencv/meshes/camera.stl"/>
+          <mesh filename="package://cimatec_simulation/meshes/camera.stl"/>
         </geometry>
       </visual>
       <collision>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <geometry>
-          <mesh filename="package://opencv/meshes/camera.stl"/>
+          <mesh filename="package://cimatec_simulation/meshes/camera.stl"/>
         </geometry>
       </collision>
       <inertial>
