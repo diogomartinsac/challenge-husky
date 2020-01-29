@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+
+ 
+  <arg name="laser_enabled" default="false"/>
+  <arg name="kinect_enabled" default="false"/>
+  <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
+
+  <include file="$(find cimatec_map)/launch/gazebo.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include file="$(find husky_gazebo)/launch/spawn_husky.launch">
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
+    <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+  </include>
+
+
+
+    <!-- <node pkg="opencv" name="opencv_camera" type="objectDetection.py" output="screen" /> -->
+
+    <arg name="rviz" default="true" />
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find challenge_husky)/rviz/config.rviz" />
+    </group>
+    
+     <!-- - Run gmapping -->
+  <!-- <include file="$(find husky_navigation)/launch/gmapping.launch" /> -->
+  <!-- - Run Move Base   -->
+  <include file="$(find husky_navigation)/launch/move_base.launch">
+    <arg name="no_static_map" value="true"/>
+  </include>
+
+
+
+</launch>

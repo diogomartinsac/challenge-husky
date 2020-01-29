@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="example">
-  <xacro:arg name="gpu" default="false"/>
+  <xacro:arg name="gpu" default="true"/>
   <xacro:arg name="topic" default="/velodyne_points"/>
   <xacro:property name="gpu" value="$(arg gpu)" />
   <xacro:property name="topic" value="$(arg topic)" />
