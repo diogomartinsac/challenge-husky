@@ -205,5 +205,5 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(quaternion_euler src/quaternion_to_euler.cpp)
+add_executable(quaternion_euler src/quaternion_euler.cpp)
 target_link_libraries(quaternion_euler ${catkin_LIBRARIES})

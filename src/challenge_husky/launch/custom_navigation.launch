@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <node pkg="quaternion_euler" name="quaternion_euler" type="quaternion_euler" />
+  <node pkg="sphere_follower" name="opencv_camera" type="camera.py" output="screen" />
+  <node pkg="sphere_follower" name="robot_vision" type="control_vision.py" output="screen" />
+
+</launch>
