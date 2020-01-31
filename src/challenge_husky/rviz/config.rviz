@@ -61,20 +61,24 @@ Visualization Manager:
       Enabled: true
       Links:
         All Links Enabled: true
+        Camera:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_camera:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         base_footprint:
           Alpha: 1
           Show Axes: false
           Show Trail: false
         base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        bowler_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -203,7 +207,7 @@ Visualization Manager:
               Scale: 1
               Value: true
             Value: true
-          Enabled: true
+          Enabled: false
           Keep: 100
           Name: Odometry
           Position Tolerance: 0.10000000149011612
@@ -219,7 +223,7 @@ Visualization Manager:
             Value: Arrow
           Topic: /odometry/filtered
           Unreliable: false
-          Value: true
+          Value: false
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -440,18 +444,18 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 1.629080057144165
-        Y: -0.08347029983997345
-        Z: -0.8487120270729065
+        X: 24.945972442626953
+        Y: 1.7352163791656494
+        Z: 1.9727351665496826
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9198000431060791
+      Pitch: 1.0748001337051392
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.485396385192871
+      Yaw: 4.565397262573242
     Saved: ~
 Window Geometry:
   Displays:
