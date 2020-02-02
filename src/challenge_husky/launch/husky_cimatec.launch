@@ -112,16 +112,16 @@
   </node>
 
 
- <rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>
+ <rosparam file="$(find challenge_husky)/param/ros.yaml"/>
 
   <node name="Operator" pkg="nav2d_operator" type="operator" >
 		<remap from="scan" to="scan"/>
-		<rosparam file="$(find nav2d_tutorials)/param/operator.yaml"/>
-		<rosparam file="$(find nav2d_tutorials)/param/costmap.yaml" ns="local_map" />
+		<rosparam file="$(find challenge_husky)/param/operator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/costmap.yaml" ns="local_map" />
 	</node> -->
 
   <node name="Navigator" pkg="nav2d_navigator" type="navigator">
-		<rosparam file="$(find nav2d_tutorials)/param/navigator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/navigator.yaml"/>
 	</node>
 
   <node name="GetMap" pkg="nav2d_navigator" type="get_map_client" />
