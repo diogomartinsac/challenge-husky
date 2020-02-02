@@ -34,9 +34,9 @@
             target_frame: velodyne # Leave disabled to output scan in pointcloud frame
             transform_tolerance: 0.01
             min_height: -0.4
-            max_height: 2.0
-            angle_min: -M_PI
-            angle_max: M_PI
+            <!-- max_height: 2.0 -->
+            angle_min: -1.0471 # -M_PI/2
+            angle_max: 1.0471 # M_PI/2
             angle_increment: 0.0087 # M_PI/360.0
             scan_time: 0.3333
             range_min: 0.45
@@ -47,7 +47,7 @@
             # 0 : Detect number of cores
             # 1 : Single threaded
             # 2->inf : Parallelism level
-            concurrency_level: 1
+            concurrency_level: 0
         </rosparam>
     </node>
 
@@ -57,7 +57,7 @@
     </group>
 
   <!-- - Run Move Base   -->
-  <include file="$(find challenge_husky)/launch/custom_move_base.launch">
+  <include file="$(find husky_navigation)/launch/move_base.launch">
     <arg name="no_static_map" value="true"/>
   </include>
 
@@ -69,7 +69,7 @@
 
 	     <!-- - Run gmapping -->
 <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
-	<rosparam file="$(find challenge_husky)/param/mapper.yaml"/>
+	<!-- <rosparam file="$(find challenge_husky)/param/mapper.yaml"/> -->
     <rosparam>
       odom_frame: odom
       base_frame: base_link
@@ -77,9 +77,10 @@
 
       map_update_interval: 0.5 # Publish new map
 
-      maxUrange: 20 # Should be just less than sensor range
-      maxRange: 50 # Should be just greater than sensor range
+      maxUrange: 120 #20 # Should be just less than sensor range
+      maxRange: 140 #50 # Should be just greater than sensor range
       particles: 100 # Increased from 80
+
 
       # Update frequencies
       linearUpdate: 0.3
@@ -112,16 +113,16 @@
   </node>
 
 
- <rosparam file="$(find nav2d_tutorials)/param/ros.yaml"/>
+ <rosparam file="$(find challenge_husky)/param/ros.yaml"/>
 
   <node name="Operator" pkg="nav2d_operator" type="operator" >
 		<remap from="scan" to="scan"/>
-		<rosparam file="$(find nav2d_tutorials)/param/operator.yaml"/>
-		<rosparam file="$(find nav2d_tutorials)/param/costmap.yaml" ns="local_map" />
+		<rosparam file="$(find challenge_husky)/param/operator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/costmap.yaml" ns="local_map" />
 	</node> -->
 
   <node name="Navigator" pkg="nav2d_navigator" type="navigator">
-		<rosparam file="$(find nav2d_tutorials)/param/navigator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/navigator.yaml"/>
 	</node>
 
   <node name="GetMap" pkg="nav2d_navigator" type="get_map_client" />
