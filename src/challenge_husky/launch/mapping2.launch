@@ -1,0 +1,68 @@
+<launch>
+
+	<!-- Some general parameters -->
+	<param name="use_sim_time" value="true" />
+	<rosparam file="$(find challenge_husky)/param/ros.yaml"/>
+
+
+	<!-- Start the Operator to control the simulated robot -->
+	<node name="Operator" pkg="nav2d_operator" type="operator" >
+		<remap from="scan" to="scan"/>
+		<rosparam file="$(find challenge_husky)/param/operator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/costmap.yaml" ns="local_map" />
+	</node>
+
+	     <!-- - Run gmapping -->
+<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+	<rosparam file="$(find challenge_husky)/param/mapper.yaml"/>
+    <rosparam>
+      odom_frame: odom
+      base_frame: base_link
+      map_frame: map
+
+      map_update_interval: 0.5 # Publish new map
+
+      maxUrange: 110 # Should be just less than sensor range
+      maxRange: 140 # Should be just greater than sensor range
+      particles: 100 # Increased from 80
+
+      # Update frequencies
+      linearUpdate: 0.3
+      angularUpdate: 0.5
+      temporalUpdate: 2.0
+      resampleThreshold: 0.5
+
+      # Initial Map Size
+      xmin: -100.0
+      ymin: -100.0
+      xmax: 100.0
+      ymax: 100.0
+      delta: 0.05
+
+      # All default
+      sigma: 0.05
+      kernelSize: 1
+      lstep: 0.05
+      astep: 0.05
+      iterations: 5
+      lsigma: 0.075
+      ogain: 3.0
+      lskip: 0
+      llsamplerange: 0.01
+      llsamplestep: 0.01
+      lasamplerange: 0.005
+      lasamplestep: 0.005
+
+    </rosparam>
+  </node>
+
+	<!-- Start the Navigator to move the robot autonomously -->
+	<node name="Navigator" pkg="nav2d_navigator" type="navigator">
+		<rosparam file="$(find challenge_husky)/param/navigator.yaml"/>
+	</node>
+
+	<node name="GetMap" pkg="nav2d_navigator" type="get_map_client" />
+	<node name="Explore" pkg="nav2d_navigator" type="explore_client" />
+	<node name="SetGoal" pkg="nav2d_navigator" type="set_goal_client" />
+
+</launch>
