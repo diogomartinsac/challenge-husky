@@ -14,13 +14,18 @@ Install
 Clone to Workspace:
 ---
 
-`$ git clone https://bitbucket.org/DataspeedInc/velodyne_simulator.git`
-
 `$ git clone https://github.com/ros-perception/pointcloud_to_laserscan.git`
 
 `$ git clone https://github.com/skasperski/navigation_2d.git`
 
 `$ git clone https://github.com/Brazilian-Institute-of-Robotics/bir.cimatec4_map.git`
+
+Change 
+---
+`File : "workspace"/src/opencv/urdf/camera.xacro`
+
+`Line 17 to : <plugin name="light_sensor_plugin" filename="/home/"user"/"path to workspace"/devel/lib/libgazebo_light_sensor_plugin.so">`
+
 
 # **Run:**
 
