@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="laser_enabled" default="false"/>
+  <arg name="kinect_enabled" default="false"/>
+  <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
+
+
+    <arg name="world_name" default="$(find sphere_follower)/worlds/cimatec_world.world"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_name)"/> 
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <include file="$(find challenge_husky)/launch/custom_spawn_husky.launch">
+    <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+    <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
+    <arg name="urdf_extras" default="$(arg urdf_extras)"/>
+    <arg name="x" default="45.0"/>
+    <arg name="y" default="-2.0"/>
+    <arg name="z" default="0.0"/>
+    <arg name="yaw" default="3.1415"/>
+  </include>
+
+  <!-- - Run Move Base   -->
+  <include file="$(find challenge_husky)/launch/custom_move_base.launch">
+    <arg name="no_static_map" value="true"/>
+  </include>
+
+  <!-- - Run gmapping -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
+    <rosparam file="$(find challenge_husky)/param/gmapping.yaml"/>
+  </node>
+
+  <!-- Nav2d -->
+ <rosparam file="$(find challenge_husky)/param/ros.yaml"/>
+
+  <node name="Operator" pkg="nav2d_operator" type="operator" >
+		<rosparam file="$(find challenge_husky)/param/operator.yaml"/>
+		<rosparam file="$(find challenge_husky)/param/costmap.yaml" ns="local_map" />
+    <remap from="cmd_vel" to="/cmd_vel_nav2d"/>
+	</node>
+
+  <node name="Navigator" pkg="nav2d_navigator" type="navigator">
+		<rosparam file="$(find challenge_husky)/param/navigator.yaml"/>
+	</node>
+
+  <node name="GetMap" pkg="nav2d_navigator" type="get_map_client" />
+  <node name="Explore" pkg="nav2d_navigator" type="explore_client" />
+  <node name="SetGoal" pkg="nav2d_navigator" type="set_goal_client" /> 
+
+
+<!-- RVIZ -->
+  <arg name="rviz" default="true" />
+<group if="$(arg rviz)">
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find challenge_husky)/rviz/config.rviz" />
+</group>
+
+<!-- Point Cloud to Laser Scan -->
+
+
+<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+        <remap from="cloud_in" to="/velodyne_points"/>
+        <rosparam>
+            target_frame: velodyne # Leave disabled to output scan in pointcloud frame
+            transform_tolerance: 0.01
+            min_height: -0.4
+            <!-- max_height: 2.0 -->
+            angle_min: -1.0471 # -M_PI/2
+            angle_max: 1.0471 # M_PI/2
+            angle_increment: 0.0087 # M_PI/360.0
+            scan_time: 0.3333
+            range_min: 0.45
+            range_max: 130.0
+            use_inf: true
+            inf_epsilon: 1.0
+            # Concurrency level, affects number of pointclouds queued for processing and number of threads used
+            # 0 : Detect number of cores
+            # 1 : Single threaded
+            # 2->inf : Parallelism level
+            concurrency_level: 0
+        </rosparam>
+</node>
+
+</launch>
