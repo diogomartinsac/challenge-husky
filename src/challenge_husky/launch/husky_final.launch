@@ -7,7 +7,7 @@
   <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
 
 
-    <arg name="world_name" default="$(find sphere_follower)/worlds/cimatec_world.world"/>
+    <!-- <arg name="world_name" default="$(find sphere_follower)/worlds/cimatec_world.world"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/> 
     <arg name="paused" value="false"/>
@@ -15,7 +15,16 @@
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
-  </include>
+  </include> -->
+
+<!-- Gazebo Final Map -->
+  <include file="$(find bir_cimatec4_map)/launch/gazebo.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include> 
 
 <!-- Custom Spawn  -->
   <include file="$(find challenge_husky)/launch/custom_spawn_husky.launch">
