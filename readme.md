@@ -3,6 +3,7 @@
 Find a yellow ball with an autonomous Husky.
 
 Install
+---
 
 `$ sudo apt install ros-melodic-husky-*`
 
@@ -11,6 +12,7 @@ Install
 `$ sudo apt-get install libsdl-dev`
 
 Clone to Workspace:
+---
 
 `$ git clone https://bitbucket.org/DataspeedInc/velodyne_simulator.git`
 
