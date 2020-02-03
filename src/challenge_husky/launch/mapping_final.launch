@@ -13,8 +13,9 @@
 
 
 <!--- Run Move Base -->
-  <include file="$(find challenge_husky)/launch/custom_move_base.launch"/>
-
+  <include file="$(find challenge_husky)/launch/custom_move_base.launch">
+    <!-- <arg name="no_static_map" value="true"/> -->
+  </include>
 
 <!-- Run Nav2d -->
   <rosparam file="$(find challenge_husky)/param/ros.yaml"/>

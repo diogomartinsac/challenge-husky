@@ -204,7 +204,7 @@
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
-              <uri>/home/diogo/Documents/ROS_workspaces/challenge-husky/src/sphere_follower/meshes/Planta_Completa_Menor.stl</uri>
+              <uri>/home/diogo/Documents/ROS_workspaces/challenge-husky2/src/sphere_follower/meshes/Planta_Completa_Menor.stl</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -224,7 +224,7 @@
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
-              <uri>/home/diogo/Documents/ROS_workspaces/challenge-husky/src/sphere_follower/meshes/Planta_Completa_Menor.stl</uri>
+              <uri>/home/diogo/Documents/ROS_workspaces/challenge-husky2/src/sphere_follower/meshes/Planta_Completa_Menor.stl</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
