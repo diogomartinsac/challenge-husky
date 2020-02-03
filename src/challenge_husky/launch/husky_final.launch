@@ -43,7 +43,7 @@
 		<rosparam file="$(find challenge_husky)/param/operator.yaml"/>
 		<rosparam file="$(find challenge_husky)/param/costmap.yaml" ns="local_map" />
     <remap from="cmd_vel" to="/cmd_vel_nav2d"/>
-	</node> -->
+	</node>
 
   <node name="Navigator" pkg="nav2d_navigator" type="navigator">
 		<rosparam file="$(find challenge_husky)/param/navigator.yaml"/>
@@ -52,6 +52,7 @@
   <node name="GetMap" pkg="nav2d_navigator" type="get_map_client" />
   <node name="Explore" pkg="nav2d_navigator" type="explore_client" />
   <node name="SetGoal" pkg="nav2d_navigator" type="set_goal_client" /> 
+
 
 <!-- RVIZ -->
   <arg name="rviz" default="true" />
