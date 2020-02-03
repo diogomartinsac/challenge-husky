@@ -8,7 +8,7 @@
 
 
 <!-- Gazebo Fast Map -->
-    <arg name="world_name" default="$(find sphere_follower)/worlds/cimatec_world.world"/>
+    <!-- <arg name="world_name" default="$(find sphere_follower)/worlds/cimatec_world.world"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(arg world_name)"/> 
     <arg name="paused" value="false"/>
@@ -16,16 +16,16 @@
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
-  </include>
+  </include> -->
 
 <!-- Gazebo Final Map -->
-  <!-- <include file="$(find bir_cimatec4_map)/launch/gazebo.launch">
+  <include file="$(find bir_cimatec4_map)/launch/gazebo.launch">
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
     <arg name="debug" value="false"/>
-  </include>  -->
+  </include> 
 
 <!-- Custom Spawn  -->
   <include file="$(find challenge_husky)/launch/custom_spawn_husky.launch">
@@ -33,7 +33,7 @@
     <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
     <arg name="urdf_extras" default="$(arg urdf_extras)"/>
     <arg name="x" default="45.0"/>
-    <arg name="y" default="-2.0"/>
+    <arg name="y" default="5.0"/>
     <arg name="z" default="0.0"/>
     <arg name="yaw" default="3.1415"/>
   </include>
