@@ -11,10 +11,18 @@ topics:
   topic   : cmd_vel
   timeout : 0.5
   priority: 1
-- name    : move_base
-  topic   : cmd_vel_mb
+- name    : final_ajustment
+  topic   : cmd_vel_ajustment
   timeout : 0.5
-  priority: 1
+  priority: 3
+- name    : move_base
+  topic   : cmd_vel_move_base
+  timeout : 0.5
+  priority: 2
+- name    : nav2d
+  topic   : cmd_vel_nav2d
+  timeout : 0.5
+  priority: 1  
 locks:
 - name    : e_stop
   topic   : e_stop

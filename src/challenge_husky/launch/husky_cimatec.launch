@@ -69,7 +69,7 @@
 
 	     <!-- - Run gmapping -->
 <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping">
-	<!-- <rosparam file="$(find challenge_husky)/param/mapper.yaml"/> -->
+	<!-- <rosparam file="$(find challenge_husky)/param/gmapping.yaml"/> -->
     <rosparam>
       odom_frame: odom
       base_frame: base_link

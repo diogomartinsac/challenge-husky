@@ -20,11 +20,10 @@ from actionlib_msgs.msg import GoalID
 
 
 class Camera:
-  mission_phase = None
-  camera_info = None
-  msg_move_to_goal = None
-  flag = None
-  timer_flag = None
+  # camera_info = None
+  # msg_move_to_goal = None
+  # flag = None
+  # timer_flag = None
 
   def __init__(self):
      # focal length
@@ -36,8 +35,8 @@ class Camera:
     # create a camera node
     rospy.init_node('node_camera_mission', anonymous=True)
     # controllers
-    self.linear_vel_control = Controller(5, -5, 0.01, 0, 0)
-    self.angular_vel_control = Controller(5, -5, 0.01, 0, 0)
+    self.xControl = Controller(5, -5, 0.01, 0, 0)
+    self.yawControl = Controller(2, -2, 0.005, 0, 0)
     # odometry topic subscription
     rospy.Subscriber('/odometry/filtered', Odometry, self.callback_odometry)
     # image publisher object
@@ -45,7 +44,7 @@ class Camera:
     # get camera info
     rospy.Subscriber("/diff/camera_top/camera_info", CameraInfo, self.callback_camera_info)
     # cmd_vel
-    self.velocity_publisher = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+    self.velocity_ajustment = rospy.Publisher("/cmd_vel_ajustment", Twist, queue_size=1)
     # move to goal 
     self.pub_move_to_goal = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=1)
     self.msg_move_to_goal = PoseStamped()
@@ -56,11 +55,14 @@ class Camera:
     self.y_move_base_filtered = 0
     self.timer_flag = time.time()
     self.counter = 0
+    self.controller_flag = False
 
     self.start_map = rospy.Publisher("/GetFirstMap/goal", GetFirstMapActionGoal, queue_size=1)
     self.start_explore = rospy.Publisher("/Explore/goal", ExploreActionGoal, queue_size = 1)
     self.cancel_map = rospy.Publisher("/GetFirstMap/cancel", GoalID, queue_size = 1)
     self.cancel_explore = rospy.Publisher("/Explore/cancel", GoalID, queue_size = 1)
+    self.cancel_move_base = rospy.Publisher("/move_base/cancel", GoalID, queue_size = 1)
+
     time.sleep(1)
     self.start_map.publish()
     time.sleep(5)
@@ -111,11 +113,7 @@ class Camera:
       if(len(contours_poly[index]) > 10):
         # draw a circle in sphere and put a warning message
         cv2.circle(cv2_frame, (int(centers[index][0]), int(centers[index][1])), int(radius[index]), (0, 0, 255), 5) 
-        cv2.putText(cv2_frame, 'BOMB HAS BEEN DETECTED!', (20, 130), font, 2, (0, 0, 255), 5)
-        # controller actions
-        linear_vel =  0 #self.linear_vel_control.calculate(1, 174, radius[0])
-        angular_vel = self.angular_vel_control.calculate(1, 640, centers[0][0])
-        #self.cmd_vel_pub(linear_vel, angular_vel, cv2_frame) 
+        cv2.putText(cv2_frame, 'GOAL ON SIGHT!', (20, 130), font, 2, (0, 0, 255), 5)
         # print info on terminal
         print('CONTROL INFO :')
         print('radius: ' + str(radius[0]))
@@ -124,6 +122,15 @@ class Camera:
         #print('angular vel: ' + str(angular_vel))
         self.goal_move_base(centers[0][0], radius[0])
         print('##################################')
+        if self.controller_flag:
+          control_input = Twist()
+          control_input.linear.x =  self.xControl.calculate(1, 160, radius[0])
+          control_input.angular.z = self.yawControl.calculate(1, self.camera_info.width/2, centers[0][0])
+          self.velocity_ajustment.publish(control_input)
+      else:
+        self.controller_flag = False  
+        self.xControl.reset()
+        self.yawControl.reset()
     # merge timer info to frame
     cv2.putText(cv2_frame, str(timer) + 's', (20, 60), font, 2, (50, 255, 50), 5) 
     cv2.putText(cv2_frame, str(time.ctime()), (10, 700), font, 2, (50, 255, 50), 6)
@@ -162,19 +169,16 @@ class Camera:
     self.msg_move_to_goal.pose.position.y = self.y_move_base_filtered
     self.msg_move_to_goal.pose.orientation.w = 1
     self.msg_move_to_goal.header.frame_id = self.camera_info.header.frame_id
-    if self.flag and abs(distance- self.distance_filtered) < 1:
-      self.cancel_explore.publish()
-      os.system("rosnode kill /Operator")
-      # vel_msg = Twist()
-      # vel_msg.linear.x = 0
-      # vel_msg.angular.z = 0
-      # self.velocity_publisher.publish(vel_msg)
-      # time.sleep(1)  
+    if self.flag and abs(distance- self.distance_filtered) < 3 and self.distance_filtered > 4:
       self.pub_move_to_goal.publish(self.msg_move_to_goal)
       self.flag = False
       self.timer_flag = time.time()
     if time.time() - self.timer_flag > 5:
       self.flag = True      
+    if abs(distance- self.distance_filtered) < 1 and self.distance_filtered < 4:
+      self.cancel_move_base.publish()
+      self.controller_flag = True
+
     print('Euclidean distance to goal: ' + str(distance))
     print('Filtered euclidean distance to goal: ' + str(self.distance_filtered))
     print('Error: ' + str(distance - self.distance_filtered))
@@ -186,13 +190,6 @@ class Camera:
     print(str(self.counter))
 
 
-
-  def pub_move_base(self, x, y):
-    if self.mission_phase == None:
-      self.mission_phase = 1
-
-  #def move_base_pub(self, x, y, angle):
-    #coment
 
 class Controller:
   sat_max = 0
@@ -224,7 +221,11 @@ class Controller:
     # set error_prev for kd   
     self.error_prev = self.error   
     return control_output  
-
+  def reset(self):
+    self.error = 0
+    self.error_integral = 0  
+    self.error_prev = 0
+  
 # main function
 if __name__	== '__main__':
   try:
