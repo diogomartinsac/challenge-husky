@@ -1,8 +1,8 @@
 # **Husky Challenge**
 
-This project was make to autonomous navigation for Husky Clearpath simulated in Gazebo to found a yellow ball.
+Find a yellow ball with an autonomous Husky.
 
-# **Steps**
+# **Install**
 ---
 
 `$ sudo apt install ros-melodic-husky-*`
@@ -11,7 +11,7 @@ This project was make to autonomous navigation for Husky Clearpath simulated in 
 
 `$ sudo apt-get install libsdl-dev`
 
-Dependencies:
+Clone to Workspace:
 ---
 
 `$ git clone https://bitbucket.org/DataspeedInc/velodyne_simulator.git`
