@@ -19,11 +19,7 @@ from nav2d_navigator.msg import GetFirstMapActionGoal, ExploreActionGoal
 from actionlib_msgs.msg import GoalID 
 
 
-class Camera:
-  # camera_info = None
-  # msg_move_to_goal = None
-  # flag = None
-  # timer_flag = None
+class Robot:
 
   def __init__(self):
      # focal length
@@ -33,12 +29,10 @@ class Camera:
     # timer var
     self.start = time.time()
     # create a camera node
-    rospy.init_node('node_camera_mission', anonymous=True)
+    rospy.init_node('mission_node', anonymous=True)
     # controllers
     self.xControl = Controller(5, -5, 0.01, 0, 0)
     self.yawControl = Controller(2, -2, 0.005, 0, 0)
-    # odometry topic subscription
-    rospy.Subscriber('/odometry/filtered', Odometry, self.callback_odometry)
     # image publisher object
     self.image_pub = rospy.Publisher('camera/mission', Image, queue_size=10)
     # get camera info
@@ -56,6 +50,7 @@ class Camera:
     self.timer_flag = time.time()
     self.counter = 0
     self.controller_flag = False
+    self.error_distance = 999
 
     self.start_map = rospy.Publisher("/GetFirstMap/goal", GetFirstMapActionGoal, queue_size=1)
     self.start_explore = rospy.Publisher("/Explore/goal", ExploreActionGoal, queue_size = 1)
@@ -131,16 +126,17 @@ class Camera:
         self.controller_flag = False  
         self.xControl.reset()
         self.yawControl.reset()
+        self.error_distance = 999
+        self.counter = 0
     # merge timer info to frame
-    cv2.putText(cv2_frame, str(timer) + 's', (20, 60), font, 2, (50, 255, 50), 5) 
-    cv2.putText(cv2_frame, str(time.ctime()), (10, 700), font, 2, (50, 255, 50), 6)
+    if self.error_distance < 20:
+      cv2.putText(cv2_frame, str(self.error_distance), (20, 60), font, 2, (50, 255, 50), 5) 
+    cv2.putText(cv2_frame, str(self.counter), (10, 700), font, 2, (50, 255, 50), 6)
 
     # convert img to ros and pub image in a topic
     ros_frame = self.bridge.cv2_to_imgmsg(cv2_frame, "bgr8")
     self.image_pub.publish(ros_frame)
 
-  def callback_odometry(self, data):
-    self.odometry_data = data
 
   def callback_camera_info(self, data):
     self.camera_info = data
@@ -151,12 +147,6 @@ class Camera:
     # simply keeps python from exiting until this node is stopped
     rospy.spin()
 
-  def cmd_vel_pub(self, linear, angular, frame):
-    cv2.putText(frame, 'Process: center alignment', (20, 640), cv2.FONT_HERSHEY_SIMPLEX, 2, (200, 0, 0), 3)
-    vel_msg = Twist()
-    vel_msg.linear.x = linear
-    vel_msg.angular.z = angular
-    self.velocity_publisher.publish(vel_msg)
   
   def goal_move_base(self, center_ball, radius):
     distance = (1 * self.focalLength) / (radius * 2)
@@ -187,6 +177,7 @@ class Camera:
     print('Y relative to '+ self.camera_info.header.frame_id + ': '  + str(y_move_base))
     print('Filtered Y relative to '+ self.camera_info.header.frame_id + ': '  + str(self.y_move_base_filtered))
     self.counter += 1
+    self.error_distance = distance - self.distance_filtered
     print(str(self.counter))
 
 
@@ -229,7 +220,7 @@ class Controller:
 # main function
 if __name__	== '__main__':
   try:
-    cam_print = Camera()  
-    cam_print.listener()  
+    mission = Robot()  
+    mission.listener()  
   except rospy.ROSInterruptException:
     pass			

@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <launch>
+
+<!-- Gazebo -->
   <arg name="laser_enabled" default="false"/>
   <arg name="kinect_enabled" default="false"/>
   <arg name="urdf_extras" default="$(find challenge_husky)/urdf/attachments.urdf.xacro"/>
@@ -15,6 +17,7 @@
     <arg name="debug" value="false"/>
   </include>
 
+<!-- Custom Spawn  -->
   <include file="$(find challenge_husky)/launch/custom_spawn_husky.launch">
     <arg name="laser_enabled" value="$(arg laser_enabled)"/>
     <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
@@ -25,7 +28,7 @@
     <arg name="yaw" default="3.1415"/>
   </include>
   
-
+<!-- Pointcloud to laserscan -->
   <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
         <remap from="cloud_in" to="/velodyne_points"/>
         <rosparam>
@@ -39,7 +42,7 @@
             concurrency_level: 1
         </rosparam>
   </node>
-
+<!-- Rviz -->
   <arg name="rviz" default="true"/>
   <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" respawn="false" output="screen" args="-d $(find challenge_husky)/config/rviz_config.rviz" />
 
