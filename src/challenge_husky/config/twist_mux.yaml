@@ -17,7 +17,7 @@ topics:
   priority: 3
 - name    : move_base
   topic   : cmd_vel_move_base
-  timeout : 5.0
+  timeout : 3.0
   priority: 2
 - name    : nav2d
   topic   : cmd_vel_nav2d

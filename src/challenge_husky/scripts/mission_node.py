@@ -51,6 +51,7 @@ class Robot:
     self.counter = 0
     self.controller_flag = False
     self.error_distance = 999
+    self.distance_controller = 0
 
     self.start_map = rospy.Publisher("/GetFirstMap/goal", GetFirstMapActionGoal, queue_size=1)
     self.start_explore = rospy.Publisher("/Explore/goal", ExploreActionGoal, queue_size = 1)
@@ -178,6 +179,7 @@ class Robot:
     print('Filtered Y relative to '+ self.camera_info.header.frame_id + ': '  + str(self.y_move_base_filtered))
     self.counter += 1
     self.error_distance = distance - self.distance_filtered
+    self.distance_controller = distance
     print(str(self.counter))
 
 

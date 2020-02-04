@@ -32,7 +32,7 @@
     <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
     <arg name="urdf_extras" default="$(arg urdf_extras)"/>
     <arg name="x" default="45.0"/>
-    <arg name="y" default="-2.0"/>
+    <arg name="y" default="5.0"/>
     <arg name="z" default="0.0"/>
     <arg name="yaw" default="3.1415"/>
   </include>
