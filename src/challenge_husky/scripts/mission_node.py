@@ -159,11 +159,11 @@ class Robot:
     self.msg_move_to_goal.pose.position.y = self.y_move_base_filtered
     self.msg_move_to_goal.pose.orientation.w = 1
     self.msg_move_to_goal.header.frame_id = self.camera_info.header.frame_id
-    if self.flag and abs(distance- self.distance_filtered) < 7 and self.distance_filtered > 4:
+    if self.flag and abs(distance- self.distance_filtered) < 4 and self.distance_filtered > 4:
       self.pub_move_to_goal.publish(self.msg_move_to_goal)
       self.flag = False
       self.timer_flag = time.time()
-    if time.time() - self.timer_flag > 5:
+    if time.time() - self.timer_flag > 10 and self.distance_filtered <20:
       self.flag = True      
     if abs(distance- self.distance_filtered) < 1 and self.distance_filtered < 4:
       self.cancel_move_base.publish()

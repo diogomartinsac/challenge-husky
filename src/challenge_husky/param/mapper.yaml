@@ -2,7 +2,7 @@
 
 grid_resolution: 0.1
 range_threshold: 130.0
-map_update_rate: 5
+map_update_rate: 20
 publish_pose_graph: true
 max_covariance: 0.01
 transform_publish_period: 0.1
@@ -10,7 +10,7 @@ min_map_size: 20
 
 ### Localizer #############################################
 
-min_particles: 2500
+min_particles: 1000 #2500
 max_particles: 10000
 
 ### Karto #################################################
@@ -18,7 +18,7 @@ max_particles: 10000
 # For a full list of available parameters and their
 # corresponding default values, see OpenKarto/OpenMapper.h
 
-MinimumTravelDistance: 1.0
+MinimumTravelDistance: 10.0
 MinimumTravelHeading: 0.52
 LoopSearchMaximumDistance: 10.0
 
